@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 
 app.post("/api/ticket", postTicket);
 app.get("/api/ticket/:user", getTickets);
-app.get("/api/ticket/:support", getAssignedTickets)
+app.get("/api/ticket/:support", getAssignedTickets);
 app.get("/api/users", getUsers);
 app.get("/api/:id/user", getUser);
 app.patch("/api/:id/users", updateUsers);
