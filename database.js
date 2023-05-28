@@ -14,10 +14,12 @@ const ticketSchema = new mongoose.Schema({
 const Ticket = mongoose.model("Ticket", ticketSchema);
 
 const notificationsSchema = new mongoose.Schema({
-  type: String,
-  section: String,
-  body: String,
-  read: String
+  From: String,
+  To: String,
+  Type: String,
+  Section: String,
+  Body: String,
+  Read: Boolean
 });
 
 const Notification = mongoose.model("Notification", notificationsSchema);
