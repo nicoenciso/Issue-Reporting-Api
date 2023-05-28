@@ -8,7 +8,7 @@ const ticketSchema = new mongoose.Schema({
   Priority: String, 
   AssigneeID: String,
   Open: String,
-  Close: String,
+  Closed: String,
 });
 
 const Ticket = mongoose.model("Ticket", ticketSchema);
@@ -33,7 +33,7 @@ const postTicket = async (req, res, next) => {
     Priority,
     AssigneeID,
     Open: date.toLocaleDateString(), 
-    Close: ""
+    Closed: ""
   });
   try {
     const ticket = await newTicket.save();
@@ -52,7 +52,7 @@ const postTicket = async (req, res, next) => {
 };
 
 const getTickets = async (req, res) => {
-  const tickets = await Ticket.find({userID: req.params.user})
+  const tickets = await Ticket.find({userID: req.params.id})
   const resTickets = tickets.map(t => ({
       IssueNo: tickets.indexOf(t)+1,
       Status: t.Status,
@@ -61,14 +61,15 @@ const getTickets = async (req, res) => {
       Priority: t.Priority,
       AssigneeID: t.AssigneeID,
       Open: t.Open,
-      Close: t.Close
+      Closed: t.Closed
   }))
   res.json(resTickets)
 };
 
 const getAssignedTickets = async (req, res) => {
-  const tickets = await Ticket.find({AssigneeID: req.params.support})
+  const tickets = await Ticket.find({AssigneeID: req.params.id})
   const resTickets = tickets.map(t => ({
+      _id: t._id,
       IssueNo: tickets.indexOf(t)+1,
       Status: t.Status,
       Description: t.Description,
@@ -76,11 +77,20 @@ const getAssignedTickets = async (req, res) => {
       Priority: t.Priority,
       ReportedBy: t.userID,
       Open: t.Open,
-      Close: t.Close
+      Closed: t.Closed
   }))
   res.json(resTickets)
 };
 
+const updateTickets = async (req, res) => {
+  const ticket = await Ticket.findByIdAndUpdate(
+    { _id: req.params.id }, 
+    req.body
+  )
+  res.json(ticket)
+}
+
 exports.postTicket = postTicket;
 exports.getTickets = getTickets;
 exports.getAssignedTickets = getAssignedTickets;
+exports.updateTickets = updateTickets;

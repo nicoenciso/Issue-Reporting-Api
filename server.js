@@ -6,7 +6,7 @@ require("dotenv").config();
 const app = express()
 const port = 3000
 
-const { postTicket, postUser, getTickets, getAssignedTickets } = require("./database.js");
+const { postTicket, postUser, getTickets, getAssignedTickets, updateTickets } = require("./database.js");
 const { getUsers, getUser, updateUsers, getUserRole, getUsersInRole } = require("./auth0.js");
 
  mongoose
@@ -17,7 +17,7 @@ const { getUsers, getUser, updateUsers, getUserRole, getUsersInRole } = require(
   .then(() => console.log("Connected!"));
 
 const options = {
-  origin: process.env.ORIGIN2 || "*",
+  origin: process.env.ORIGIN3 || "*",
 };
 
 app.use(cors(options));
@@ -29,8 +29,9 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/ticket", postTicket);
-app.get("/api/ticket/:user", getTickets);
-app.get("/api/ticket/:support", getAssignedTickets);
+app.get("/api/ticket/:id/user", getTickets);
+app.get("/api/ticket/:id/support", getAssignedTickets);
+app.patch("/api/ticket/:id/checkticket", updateTickets);
 app.get("/api/users", getUsers);
 app.get("/api/:id/user", getUser);
 app.patch("/api/:id/users", updateUsers);
