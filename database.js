@@ -92,7 +92,26 @@ const updateTickets = async (req, res) => {
   res.json(ticket)
 }
 
+const postNotification = async (req, res) => {
+  const {From,To,Type,Section,Body} = req.body;
+  const newNotification = new Notification({
+    From,
+    To,
+    Type,
+    Section,
+    Body,
+    Read: false
+  });
+  try {
+    const notification = await newNotification.save();
+    res.json(notification)
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 exports.postTicket = postTicket;
 exports.getTickets = getTickets;
 exports.getAssignedTickets = getAssignedTickets;
 exports.updateTickets = updateTickets;
+exports.postNotification = postNotification;

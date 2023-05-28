@@ -6,7 +6,7 @@ require("dotenv").config();
 const app = express()
 const port = 3000
 
-const { postTicket, postUser, getTickets, getAssignedTickets, updateTickets } = require("./database.js");
+const { postTicket, postUser, getTickets, getAssignedTickets, updateTickets, postNotification } = require("./database.js");
 const { getUsers, getUser, updateUsers, getUserRole, getUsersInRole } = require("./auth0.js");
 
  mongoose
@@ -32,6 +32,7 @@ app.post("/api/ticket", postTicket);
 app.get("/api/ticket/:id/user", getTickets);
 app.get("/api/ticket/:id/support", getAssignedTickets);
 app.patch("/api/ticket/:id/checkticket", updateTickets);
+app.post("/api/Notification", postNotification);
 app.get("/api/users", getUsers);
 app.get("/api/:id/user", getUser);
 app.patch("/api/:id/users", updateUsers);
