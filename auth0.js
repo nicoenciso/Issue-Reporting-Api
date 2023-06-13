@@ -4,7 +4,7 @@ const auth0 = new ManagementClient({
   domain: process.env.DOMAIN,
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  scope: "read:users update:users read:roles read:role_members update:users_app_metadata",
+  scope: "read:users update:users read:roles read:role_members create:role_members update:users_app_metadata",
 });
 
 const getUsers = (req, res) => {
@@ -16,7 +16,7 @@ const getUsers = (req, res) => {
         email: user.email,
         userID: user.user_id,
         firstName: user.given_name,
-        lastname: user.family_name
+        lastName: user.family_name
       }))
       res.json(usersList);
     })
@@ -33,7 +33,7 @@ const getUser = (req, res) => {
         username: user.username,
         email: user.email,
         firstName: user.given_name,
-        lastname: user.family_name
+        lastName: user.family_name
       });
     })
     .catch((err) => {
@@ -49,6 +49,31 @@ const updateUsers = (req, res) => {
   }
   auth0
     .updateUser({id: req.params.id}, data)
+    .then((newData) => {
+    res.json(newData);
+  })
+  .catch((err) => {
+    console.log(err)
+  });
+}
+
+const updateUsersPicture = (req, res, next) => {
+  const file = req.file;
+  const metadata = { picture: `data:image/jpeg;base64,${file.buffer.toString('base64')}`}
+  auth0
+    .updateUserMetadata({id: req.params.id}, metadata)
+    .then((newData) => {
+    res.json(newData);
+  })
+  .catch((err) => {
+    console.log(err)
+  });
+}
+
+const deleteUsersPicture = (req, res) => {
+  const clearMetadata = req.body
+  auth0
+    .updateUserMetadata({id: req.params.id}, clearMetadata)
     .then((newData) => {
     res.json(newData);
   })
@@ -80,8 +105,40 @@ const getUsersInRole = (req, res) => {
     });
 }
 
+const deleteRoleFromUser = (req, res) => {
+  const user = process.env.USER_ROLE;
+  const support = process.env.SUPPORT_ROLE;
+  auth0
+    .removeRolesFromUser(
+      {id: req.params.userId},
+      {"roles": [support, user]})
+    .then((newData) => {
+      res.json(newData);
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+}
+
+const assignRoleToUser = (req, res) => {
+  auth0
+    .assignRolestoUser(
+      {id: req.params.userId},
+      {"roles": [req.params.roleId]})
+    .then((newData) => {
+      res.json(newData);
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+}
+
 exports.getUsers = getUsers;
 exports.getUserRole = getUserRole;
 exports.getUser = getUser;
 exports.updateUsers = updateUsers;
+exports.updateUsersPicture = updateUsersPicture;
+exports.deleteUsersPicture = deleteUsersPicture;
 exports.getUsersInRole = getUsersInRole;
+exports.deleteRoleFromUser = deleteRoleFromUser;
+exports.assignRoleToUser = assignRoleToUser;
