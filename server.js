@@ -50,6 +50,7 @@ app.get("/api/:id/roles", getUserRole);
 app.get("/api/role/:roleId/users", getUsersInRole);
 app.delete("/api/role/:userId", deleteRoleFromUser);
 app.post("/api/role/:roleId/:userId", assignRoleToUser);
+
 app.listen(port, () => {
   console.log(`Server is listening in port ${port}`)
 })

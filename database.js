@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const ticketSchema = new mongoose.Schema({
+  IssueNo: {type: Number, unique: true},
   userID: String,
   Status: String,
   Description: String,
@@ -26,10 +27,13 @@ const notificationsSchema = new mongoose.Schema({
 const Notification = mongoose.model("Notification", notificationsSchema);
 
 const postTicket = async (req, res, next) => {
+  const ticketNumber = await Ticket.findOne().sort("-IssueNo").exec();
+  const newTicketNumber = ticketNumber ? ticketNumber.IssueNo + 1 : 1; 
   const { userID, Status, Description, Category, Priority, AssigneeID } =
     req.body;
   const date = new Date();
   const newTicket = new Ticket({
+    IssueNo: newTicketNumber,
     userID,
     Status,
     Description,
@@ -42,6 +46,7 @@ const postTicket = async (req, res, next) => {
   try {
     const ticket = await newTicket.save();
     res.json({
+      IssueNo: ticket.IssueNo,
       Status: ticket.Status,
       Description: ticket.Description,
       Category: ticket.Category,
@@ -55,11 +60,31 @@ const postTicket = async (req, res, next) => {
   }
 };
 
+/*
+async function enumTickets() {
+  try {
+  const tickets = await Ticket.find({}).exec();
+
+  tickets.sort((a, b) => a.IssueNo - b.IssueNo);
+
+  let currentTicketNumber = 1;
+    for(const ticket of tickets) {
+      ticket.IssueNo = currentTicketNumber++;
+      await ticket.save();
+    }
+    console.log("enumeracion completada")
+}catch (err) {
+  console.error("error con los tickets")
+}
+}
+enumTickets();
+*/
+
 const getTickets = async (req, res) => {
   const tickets = await Ticket.find({ userID: req.params.id });
   const resTickets = tickets.map((t) => ({
     _id: t._id,
-    IssueNo: tickets.indexOf(t) + 1,
+    IssueNo: t.IssueNo,
     Status: t.Status,
     Description: t.Description,
     Category: t.Category,
@@ -68,14 +93,14 @@ const getTickets = async (req, res) => {
     Open: t.Open,
     Closed: t.Closed,
   }));
-  res.json(resTickets);
+  res.json(resTickets.reverse());
 };
 
 const getAssignedTickets = async (req, res) => {
   const tickets = await Ticket.find({ AssigneeID: req.params.id });
   const resTickets = tickets.map((t) => ({
     _id: t._id,
-    IssueNo: tickets.indexOf(t) + 1,
+    IssueNo: t.IssueNo,
     Status: t.Status,
     Description: t.Description,
     Category: t.Category,
@@ -84,7 +109,7 @@ const getAssignedTickets = async (req, res) => {
     Open: t.Open,
     Closed: t.Closed,
   }));
-  res.json(resTickets);
+  res.json(resTickets.reverse());
 };
 
 const updateTickets = async (req, res) => {

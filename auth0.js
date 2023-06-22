@@ -16,7 +16,10 @@ const getUsers = (req, res) => {
         email: user.email,
         userID: user.user_id,
         firstName: user.given_name,
-        lastName: user.family_name
+        lastName: user.family_name,
+        picture1: user.user_metadata?.picture,
+        picture2: user.picture,
+        lastLogin: user.last_login
       }))
       res.json(usersList);
     })
