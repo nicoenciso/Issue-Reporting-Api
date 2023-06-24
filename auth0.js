@@ -54,6 +54,7 @@ const updateUsers = (req, res) => {
     .updateUser({id: req.params.id}, data)
     .then((newData) => {
     res.json(newData);
+    console.log("User Updated")
   })
   .catch((err) => {
     console.log(err)
@@ -67,6 +68,7 @@ const updateUsersPicture = (req, res, next) => {
     .updateUserMetadata({id: req.params.id}, metadata)
     .then((newData) => {
     res.json(newData);
+    console.log("User picture updated")
   })
   .catch((err) => {
     console.log(err)
@@ -79,6 +81,7 @@ const deleteUsersPicture = (req, res) => {
     .updateUserMetadata({id: req.params.id}, clearMetadata)
     .then((newData) => {
     res.json(newData);
+    console.log("User picture deleted")
   })
   .catch((err) => {
     console.log(err)
@@ -117,6 +120,7 @@ const deleteRoleFromUser = (req, res) => {
       {"roles": [support, user]})
     .then((newData) => {
       res.json(newData);
+      console.log("Role deleted");
     })
     .catch((err) => {
       console.log(err)
@@ -130,6 +134,7 @@ const assignRoleToUser = (req, res) => {
       {"roles": [req.params.roleId]})
     .then((newData) => {
       res.json(newData);
+      console.log("Role assigned");
     })
     .catch((err) => {
       console.log(err)

@@ -45,15 +45,7 @@ const postTicket = async (req, res, next) => {
   });
   try {
     const ticket = await newTicket.save();
-    res.json({
-      IssueNo: ticket.IssueNo,
-      Status: ticket.Status,
-      Description: ticket.Description,
-      Category: ticket.Category,
-      Priority: ticket.Priority,
-      AssigneeID: ticket.AssigneeID,
-      Open: ticket.Open,
-    });
+    console.log("Ticket Submited");
     next();
   } catch (err) {
     console.error(err);
@@ -118,6 +110,7 @@ const updateTickets = async (req, res) => {
     req.body
   );
   res.json(ticket);
+  console.log("Ticket updated");
 };
 
 const postNotification = async (req, res) => {
