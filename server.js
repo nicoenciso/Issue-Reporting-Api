@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
   res.send("Issue-Reporting-Api (Open API)");
 });
 
-app.post("/api/ticket", postTicket);
+app.post("/api/ticket", upload.single("Attachment"), postTicket);
 app.get("/api/ticket/:id/user", getTickets);
 app.get("/api/ticket/:id/support", getAssignedTickets);
 app.patch("/api/ticket/:id/checkticket", updateTickets);

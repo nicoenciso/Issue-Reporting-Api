@@ -10,6 +10,8 @@ const ticketSchema = new mongoose.Schema({
   AssigneeID: String,
   Open: String,
   Closed: String,
+  Attachment: String,
+  AttachmentMimeType: String,
 });
 
 const Ticket = mongoose.model("Ticket", ticketSchema);
@@ -28,9 +30,10 @@ const Notification = mongoose.model("Notification", notificationsSchema);
 
 const postTicket = async (req, res, next) => {
   const ticketNumber = await Ticket.findOne().sort("-IssueNo").exec();
-  const newTicketNumber = ticketNumber ? ticketNumber.IssueNo + 1 : 1; 
+  const newTicketNumber = ticketNumber ? ticketNumber.IssueNo + 1 : 1;
   const { userID, Status, Description, Category, Priority, AssigneeID } =
     req.body;
+  const file = req.file;
   const date = new Date();
   const newTicket = new Ticket({
     IssueNo: newTicketNumber,
@@ -40,11 +43,14 @@ const postTicket = async (req, res, next) => {
     Category,
     Priority,
     AssigneeID,
+    Attachment: file ? file.buffer.toString("base64") : "",
+    AttachmentMimeType: file ? file.mimetype : "",
     Open: date.toLocaleDateString(),
     Closed: "",
   });
   try {
     const ticket = await newTicket.save();
+    res.json(ticket);
     console.log("Ticket Submited");
     next();
   } catch (err) {
@@ -82,6 +88,8 @@ const getTickets = async (req, res) => {
     Category: t.Category,
     Priority: t.Priority,
     AssigneeID: t.AssigneeID,
+    Attachment: t.Attachment,
+    AttachmentMimeType: t.AttachmentMimeType,
     Open: t.Open,
     Closed: t.Closed,
   }));
@@ -98,6 +106,8 @@ const getAssignedTickets = async (req, res) => {
     Category: t.Category,
     Priority: t.Priority,
     ReportedBy: t.userID,
+    Attachment: t.Attachment,
+    AttachmentMimeType: t.AttachmentMimeType,
     Open: t.Open,
     Closed: t.Closed,
   }));
