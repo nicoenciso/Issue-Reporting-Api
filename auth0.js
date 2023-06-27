@@ -33,6 +33,8 @@ const getUser = (req, res) => {
     .getUser({id: req.params.id})
     .then((user) => {
       res.json({
+        picture1: user.user_metadata?.picture,
+        picture2: user.picture,
         username: user.username,
         email: user.email,
         firstName: user.given_name,
