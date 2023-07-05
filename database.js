@@ -28,6 +28,13 @@ const notificationsSchema = new mongoose.Schema({
 
 const Notification = mongoose.model("Notification", notificationsSchema);
 
+const categoriesSchema = new mongoose.Schema({
+  Title: String,
+  Description: String,
+});
+
+const Category = mongoose.model("Category", categoriesSchema);
+
 const postTicket = async (req, res, next) => {
   const ticketNumber = await Ticket.findOne().sort("-IssueNo").exec();
   const newTicketNumber = ticketNumber ? ticketNumber.IssueNo + 1 : 1;
@@ -50,7 +57,7 @@ const postTicket = async (req, res, next) => {
   });
   try {
     const ticket = await newTicket.save();
-    res.json(ticket);
+    res.status(200).json(ticket);
     console.log("Ticket Submited");
     next();
   } catch (err) {
@@ -93,7 +100,7 @@ const getTickets = async (req, res) => {
     Open: t.Open,
     Closed: t.Closed,
   }));
-  res.json(resTickets.reverse());
+  res.status(200).json(resTickets.reverse());
 };
 
 const getAssignedTickets = async (req, res) => {
@@ -111,7 +118,7 @@ const getAssignedTickets = async (req, res) => {
     Open: t.Open,
     Closed: t.Closed,
   }));
-  res.json(resTickets.reverse());
+  res.status(200).json(resTickets.reverse());
 };
 
 const updateTickets = async (req, res) => {
@@ -119,7 +126,7 @@ const updateTickets = async (req, res) => {
     { _id: req.params.id },
     req.body
   );
-  res.json(ticket);
+  res.status(200).json(ticket);
   console.log("Ticket updated");
 };
 
@@ -137,7 +144,8 @@ const postNotification = async (req, res) => {
   });
   try {
     const notification = await newNotification.save();
-    res.json(notification);
+    res.status(200).json(notification);
+    console.log("Notification added");
   } catch (err) {
     console.error(err);
   }
@@ -145,7 +153,7 @@ const postNotification = async (req, res) => {
 
 const getNotifications = async (req, res) => {
   const notifications = await Notification.find({ To: req.params.id });
-  res.json(notifications.reverse());
+  res.status(200).json(notifications.reverse());
 };
 
 const updateNotification = async (req, res) => {
@@ -153,21 +161,60 @@ const updateNotification = async (req, res) => {
     { _id: req.params.id },
     req.body
   );
-  res.json(notification);
+  res.status(200).json(notification);
+  console.log("Notification updated");
 };
 
 const updateAllNotifications = async (req, res) => {
-  const notifications = await Notification.updateMany({To: req.params.user}, {Read: true})
+  const notifications = await Notification.updateMany({To: req.params.user}, {Read: true});
+  res.status(200).json(notifications);
+  console.log("All notifications updated");
 }
 
 const deleteNotification = async (req, res) => {
   const notification = await Notification.findByIdAndDelete(req.params.id)
-  res.json(notification);
+  res.status(200).json(notification);
+  console.log("Notification deleted");
 }
 
 const deleteAllNotifications = async (req, res) => {
   const notifications = await Notification.deleteMany({To: req.params.user})
-  res.json(notifications)
+  res.status(200).json(notifications)
+  console.log("All notifications deleted");
+}
+
+const postCategory = async (req, res) => {
+  const { Title, Description } = req.body;
+  const newCategory = new Category({
+    Title,
+    Description,
+  });
+  try {
+    const category = await newCategory.save();
+    res.status(200).json(category);
+    console.log("Category added");
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+const getCategories = async (req, res) => {
+  const categories = await Category.find({});
+  const resCategories = categories.map((c) => ({
+    _id: c._id,
+    Title: c.Title,
+    Description: c.Description,
+  }));
+  res.status(200).json(resCategories);
+};
+
+const updateCategory = async (req, res) => {
+  const category = await Category.findByIdAndUpdate(
+    { _id: req.params.id },
+    req.body
+  );
+  res.status(200).json(category);
+  console.log("Category updated");
 }
 
 exports.postTicket = postTicket;
@@ -180,3 +227,6 @@ exports.updateNotification = updateNotification;
 exports.deleteNotification = deleteNotification;
 exports.deleteAllNotifications = deleteAllNotifications;
 exports.updateAllNotifications = updateAllNotifications;
+exports.postCategory = postCategory;
+exports.getCategories = getCategories;
+exports.updateCategory = updateCategory;
