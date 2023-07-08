@@ -146,7 +146,10 @@ const assignRoleToUser = (req, res) => {
       {id: req.params.userId},
       {"roles": [req.params.roleId]})
     .then((newData) => {
-      res.json(newData);
+      res.json({ 
+    text: "Role assigned!",
+    color: "success"
+  });
       console.log("Role assigned");
     })
     .catch((err) => {
