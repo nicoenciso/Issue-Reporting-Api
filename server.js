@@ -20,7 +20,7 @@ const { getUsers, getUser, updateUsers, updateUsersPicture, deleteUsersPicture, 
   .then(() => console.log("Connected!"));
 
 const options = {
-  origin: process.env.ORIGIN3 || "*",
+  origin: process.env.ORIGIN2 || "*",
 };
 
 app.use(cors(options));
