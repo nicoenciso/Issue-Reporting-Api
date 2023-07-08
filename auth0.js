@@ -1,5 +1,7 @@
+// Funciones Auth0
 const ManagementClient = require("auth0").ManagementClient;
 
+/* Obtiene la Auth0 API v2 TOKEN o genera una nueva */
 const auth0 = new ManagementClient({
   domain: process.env.DOMAIN,
   clientId: process.env.CLIENT_ID,
@@ -7,6 +9,7 @@ const auth0 = new ManagementClient({
   scope: "read:users update:users read:roles read:role_members create:role_members update:users_app_metadata",
 });
 
+/* Envía un arreglo con todos los objetos "usuarios" con sus atributos al cliente */
 const getUsers = (req, res) => {
   auth0
     .getUsers()
@@ -28,6 +31,7 @@ const getUsers = (req, res) => {
     })
 };
 
+/* Envía un objeto "usuario" al cliente (segun su ID) */
 const getUser = (req, res) => {
   auth0
     .getUser({id: req.params.id})
@@ -46,6 +50,7 @@ const getUser = (req, res) => {
     })
 }
 
+/* Actualiza un usuario */
 const updateUsers = (req, res) => {
   const data = {
     username: req.body.username,
@@ -63,6 +68,7 @@ const updateUsers = (req, res) => {
   });
 }
 
+/* Actualiza o agrega un objeto "picture" al atributo "user_metadata" de un usuario */
 const updateUsersPicture = (req, res, next) => {
   const file = req.file;
   const metadata = { picture: `data:image/jpeg;base64,${file.buffer.toString('base64')}`}
@@ -77,6 +83,7 @@ const updateUsersPicture = (req, res, next) => {
   });
 }
 
+/* Elimina el objeto "picture" del atributo "user_metadata" de un usuario */
 const deleteUsersPicture = (req, res) => {
   const clearMetadata = req.body
   auth0
@@ -90,6 +97,7 @@ const deleteUsersPicture = (req, res) => {
   });
 }
 
+/* Envía un arreglo con los roles de un usuario al cliente (segun su ID) */
 const getUserRole = (req, res) => {
   auth0
     .getUserRoles({id: req.params.id})
@@ -101,6 +109,7 @@ const getUserRole = (req, res) => {
   });
 }
 
+/* Envía un arreglo con los usuarios en un mismo rol al cliente */
 const getUsersInRole = (req, res) => {
   auth0
     .getUsersInRole({id: req.params.roleId})
@@ -113,6 +122,7 @@ const getUsersInRole = (req, res) => {
     });
 }
 
+/* Elimina los roles "support" y "user" de un usuario  */
 const deleteRoleFromUser = (req, res) => {
   const user = process.env.USER_ROLE;
   const support = process.env.SUPPORT_ROLE;
@@ -129,6 +139,7 @@ const deleteRoleFromUser = (req, res) => {
     });
 }
 
+/* Agrega un rol a un usuario */
 const assignRoleToUser = (req, res) => {
   auth0
     .assignRolestoUser(
