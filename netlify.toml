@@ -3,5 +3,5 @@
 
 [[redirects]]
     to="/.netlify/functions/api:splat"
-    from="/https://issue-reporting-app.netlify.app"
+    from="/*"
     status=200 
