@@ -1,3 +1,4 @@
+const serverless = require('serverless-http');
 const express = require("express")
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -55,6 +56,7 @@ app.get("/api/role/:roleId/users", getUsersInRole);
 app.delete("/api/role/:userId", deleteRoleFromUser);
 app.post("/api/role/:roleId/:userId", assignRoleToUser);
 
-app.listen(port, () => {
+/*app.listen(port, () => {
   console.log(`Server is listening in port ${port}`)
-})
+})*/
+module.exports.handler = serverless(app);
