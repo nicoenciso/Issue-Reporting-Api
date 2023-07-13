@@ -1,4 +1,4 @@
-
+![replit](https://img.shields.io/badge/replit-667881?style=for-the-badge&logo=replit&logoColor=white)
 
 <h1 align="center"> Issue-reporting-api </h1>
 
@@ -23,6 +23,7 @@
 
 
 ## License
+[![GitHub license](https://badgen.net/github/license/Naereen/Strapdown.js)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 
 Proyecto bajo licencia MIT.
 
@@ -30,6 +31,6 @@ Proyecto bajo licencia MIT.
 
 <h3 align="center"> NicoDev </h3>
 
-[Github](https://github.com/NicoDevLegend?tab=repositories)  
+[![GitHub](https://badgen.net/badge/icon/github?icon=github&label)]([https://github.com](https://github.com/NicoDevLegend?tab=repositories))   
 [Nico-Portfolio](https://nico-portfolio.netlify.app/)  
-<a href="mailto:enectrl@gmail.com">E-mail</a>  
+<a href="mailto:enectrl@gmail.com">![email](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)</a>  
