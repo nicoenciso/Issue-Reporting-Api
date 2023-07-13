@@ -1,13 +1,13 @@
 {
-  "name": "flamboyantknowndesigner",
+  "name": "Issue-reporting-api",
   "version": "1.0.0",
-  "description": "Every new repl comes with a `.replit` and a `replit.nix` file that let you configure your repl to do just about anything in any language!",
+  "description": "Una pequeño servidor creado en Express.js, de uso exclusivo para brindar conexión a la aplicación web 'Issue-reporting-app' con su base de datos en Mongodb atlas y con la Auth0 Management API v2",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "NicoDev",
   "license": "ISC",
   "dependencies": {
     "auth0": "^3.4.0",
