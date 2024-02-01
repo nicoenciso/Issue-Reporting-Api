@@ -61,9 +61,3 @@ app.listen(port, () => {
   console.log(`Server is listening in port ${port}`)
 })
 
-const http = require('http');
-
-setInterval(() => {
-  http.get('http://issue-reporting-api.nicolegend.repl.co');
-}, 280000); // Realiza la solicitud cada 4 minutos y 40 segundos (280000 milisegundos)
-
