@@ -21,6 +21,8 @@ const { getUsers, getUser, updateUsers, updateUsersPicture, deleteUsersPicture, 
 
 const options = {
   origin: process.env.ORIGIN2 || "*",
+  methos: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
 };
 
 app.use(cors(options));
