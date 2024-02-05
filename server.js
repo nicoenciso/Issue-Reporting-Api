@@ -64,5 +64,5 @@ app.listen(port, () => {
 const http = require('http');
 
 setInterval(() => {
-  http.get('https://issue-reporting-api.onrender.com');
+  http.get('http://issue-reporting-api.onrender.com');
 }, 280000); // Realiza la solicitud cada 4 minutos y 40 segundos (280000 milisegundos)
