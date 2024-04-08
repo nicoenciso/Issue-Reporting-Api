@@ -2,6 +2,8 @@
 
 <h1 align="center"> Issue-reporting-api </h1>
 
+![issue-reporting-api image](assets/issue-reporting-api-image.svg)
+
 -Un pequeño servidor creado en Express.js, de uso exclusivo para brindar conexión a la aplicación web 'Issue-reporting-app' con su base de datos en Mongodb atlas y con la Auth0 Management API v2.
 
 ## Dependencias
